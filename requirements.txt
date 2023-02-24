@@ -4,6 +4,8 @@
 #
 #    pip-compile requirements.in
 #
+python-dotenv==1.0.0
+    # via -r requirements.in
 slack-bolt==1.16.2
     # via -r requirements.in
 slack-sdk==3.20.0
