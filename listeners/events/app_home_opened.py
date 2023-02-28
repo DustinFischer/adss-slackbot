@@ -11,14 +11,14 @@ def app_home_opened(client, event, logger: Logger):
         return
 
     greeting = blocks.SectionBlock(
-        block_id='home_greeting_not_connected',
+        block_id='sec_home_greeting_upstream_not_connected',
         text=blocks.MarkdownTextObject(
             text=f':wave: Hi <@{event["user"]}>',
         )
     )
 
     primer = blocks.SectionBlock(
-        block_id='home_primer_not_connected',
+        block_id='sec_home_primer_upstream_not_connected',
         text=blocks.MarkdownTextObject(
             text=(
                 'ADSS lets you quickly discover model information.\n'
@@ -36,10 +36,10 @@ def app_home_opened(client, event, logger: Logger):
                 ),
                 style='primary',
                 url="http://auth.redirect.adss",
-                action_id='connect_adss_btn'
+                action_id='connect_upstream_btn'
             )
         ],
-        block_id='block_home_not_connected',
+        block_id='block_home_upstream_not_connected',
     )
 
     view = views.View(
@@ -50,7 +50,7 @@ def app_home_opened(client, event, logger: Logger):
             connect_button,
             blocks.DividerBlock()
         ],
-        # TODO: home view state??
+        # TODO: home view state, update on auth??
     )
 
     try:
