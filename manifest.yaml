@@ -13,12 +13,12 @@ features:
     always_online: false
   slash_commands:
     - command: /adss
-      url: https://www.example.com/slack/events
+      url: https://de12-165-73-101-208.eu.ngrok.io/slack/events/
       description: Runs ADSS search command
       should_escape: false
 oauth_config:
   redirect_urls:
-    - https://www.example.com/slack/oauth_redirect
+    - https://de12-165-73-101-208.eu.ngrok.io/slack/oauth_redirect/
   scopes:
     user:
       - users.profile:read
@@ -28,13 +28,13 @@ oauth_config:
       - commands
 settings:
   event_subscriptions:
-    request_url: https://www.example.com/slack/events
+    request_url: https://de12-165-73-101-208.eu.ngrok.io/slack/events/
     bot_events:
       - app_home_opened
       - message.channels
   interactivity:
     is_enabled: true
-    request_url: https://www.example.com/slack/events
+    request_url: https://de12-165-73-101-208.eu.ngrok.io/slack/events/
   org_deploy_enabled: false
   socket_mode_enabled: false
   token_rotation_enabled: false

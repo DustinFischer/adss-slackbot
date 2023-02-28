@@ -50,3 +50,14 @@ class HomeNoAuthView(BaseHomeView):
             connect_button,
             DividerBlock()
         ]
+
+
+class UserHomeView(BaseHomeView):
+    def blocks(self):
+        return [
+            SectionBlock(
+                block_id='sec_home_greeting_upstream_connected',
+                text=MarkdownTextObject(
+                    text=f':wave: Hi <@{self.event["user"]}> you are authorized to use this app.',
+                )
+            )]
