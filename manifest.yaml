@@ -2,14 +2,14 @@ display_information:
   name: ADSS
   description: ADSS Slack Integration
   background_color: "#666466"
-  long_description: ADSS Slack integration long description. Get detailed views of ADSS inventory. This is longer than the short description. I am struggling to come up with 175 characters to fill this space.
+  long_description: ADSS lets you quickly discover model information.\n• Quick access to preview panel level information for any model entity from inside a slack channel.\n• Notifications of changes to followed entities
 features:
   app_home:
     home_tab_enabled: true
     messages_tab_enabled: true
     messages_tab_read_only_enabled: true
   bot_user:
-    display_name: ADSS_bot
+    display_name: ADSS
     always_online: false
   slash_commands:
     - command: /adss
