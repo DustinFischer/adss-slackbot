@@ -1,10 +1,8 @@
-from flask import Flask, request
+from flask import Flask, request, url_for
 from flask.logging import default_handler
 
 import slack
-
 from utils.log import get_logger
-from config import settings
 
 
 def create_app():
@@ -19,20 +17,16 @@ def create_app():
     # init db
 
     # register api endpoints...
-    from api.events import events_api
-
-    flask.register_blueprint(events_api, url_prefix='/slack/events')
+    from api import slack_api
+    flask.register_blueprint(slack_api)
 
     @flask.route(settings.SLACK_INSTALL_PATH, methods=['GET'])
     def slack_install():
         return slack.handler.handle(request)
 
-    @flask.route(settings.SLACK_OAUTH_REDIRECT_URI_PATH, methods=['GET'])
-    def slack_oauth_redirect():
-        return slack.handler.handle(request)
+        # middlewares...
 
-    # middlewares...
-
+    # ...
     flask.logger.debug("App Started with the following endpoints: \n{}".format(
         "\n".join([str(endpoint) + " [" + str(endpoint.methods) + "]" for endpoint in flask.url_map.iter_rules()])
     ))
