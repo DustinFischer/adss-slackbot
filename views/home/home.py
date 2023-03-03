@@ -7,6 +7,7 @@ from slack_sdk.models.blocks import (
     DividerBlock
 )
 
+from config import settings
 from . import BaseHomeView
 
 
@@ -37,7 +38,7 @@ class HomeNoAuthView(BaseHomeView):
                         text='Connect ADSS'
                     ),
                     style='primary',
-                    url="http://auth.redirect.adss",
+                    url=f'{settings.BASE_URL}/slack/login',
                     action_id='connect_upstream_btn'
                 )
             ],
