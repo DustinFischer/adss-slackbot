@@ -22,7 +22,10 @@ class OauthCallbackOptions(CallbackOptions):
         Define behaviour after slack oauth redirect callback has been successful
         """
 
-        # FIXME: is there a better way to do this than this? I'm sure there must be...
+        # FIXME: I'm sure there must be a much better way to do this...
+        #  This is a quick hack to get the flow working.
+        #    How do we reconcile the slack user before and after? Maybe a challenge state param with request to ext auth
+        #    that relates to the user (state->user uuid link?) that created it in the initial redirect after installation?
         install_meta = {
             'enterprise_id': args.installation.enterprise_id,
             'team_id': args.installation.team_id,
