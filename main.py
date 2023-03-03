@@ -10,28 +10,30 @@ def create_app():
     default_handler.level = get_logger('slack.adss').level
 
     # Flask ...
-    flask = Flask(__name__)
-    flask.config.from_object('config.Config')
+    app = Flask(__name__)
+    app.config.from_object('config.Config')
 
     # add CORS?
     # init db
 
-    # register api endpoints...
-    from api import slack_api
-    flask.register_blueprint(slack_api)
+    with app.app_context():
+        # register api endpoints...
+        from api import slack_api
 
-    @flask.route(settings.SLACK_INSTALL_PATH, methods=['GET'])
-    def slack_install():
-        return slack.handler.handle(request)
+        app.register_blueprint(slack_api)
 
-        # middlewares...
+        @app.route(settings.SLACK_INSTALL_PATH, methods=['GET'])
+        def slack_install():
+            return slack.handler.handle(request)
 
-    # ...
-    flask.logger.debug("App Started with the following endpoints: \n{}".format(
-        "\n".join([str(endpoint) + " [" + str(endpoint.methods) + "]" for endpoint in flask.url_map.iter_rules()])
-    ))
+            # middlewares...
 
-    return flask
+        # ...
+        app.logger.debug("App Started with the following endpoints: \n{}".format(
+            "\n".join([str(endpoint) + " [" + str(endpoint.methods) + "]" for endpoint in app.url_map.iter_rules()])
+        ))
+
+        return app
 
 
 if __name__ == "__main__":
