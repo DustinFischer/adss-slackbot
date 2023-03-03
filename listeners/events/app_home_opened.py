@@ -1,16 +1,26 @@
 from logging import Logger
 
+from slack_bolt.context.context import BoltContext
+
+import slack
 # allowed args: https://slack.dev/bolt-python/api-docs/slack_bolt/kwargs_injection/args.html
 from views.home.home import HomeNoAuthView, UserHomeView
 
 
-def app_home_opened(client, event, logger: Logger):
+def is_authenticated(**kwargs):
+    return slack.app.installation_store.find_installation(**kwargs)
+
+
+def app_home_opened(client, event, context: BoltContext, logger: Logger):
     # ignore the app_home_opened event for anything but the Home tab
     if event['tab'] != 'home':
         return
 
     # handle auth logic
-    if True:
+
+    if is_authenticated(team_id=context.team_id, user_id=context.user_id, enterprise_id=context.enterprise_id):
+        view = UserHomeView(event)
+    else:
         view = HomeNoAuthView(event)
 
     try:

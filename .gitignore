@@ -1,6 +1,7 @@
 # files
 .python-version
 .env
+.installations/
 
 # dirs
 venv/
