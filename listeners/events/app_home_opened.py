@@ -8,6 +8,7 @@ from views.home.home import HomeNoAuthView, UserHomeView
 
 
 def is_authenticated(**kwargs):
+    # should check if authed against ADSS
     return slack.app.installation_store.find_installation(**kwargs)
 
 
@@ -17,7 +18,6 @@ def app_home_opened(client, event, context: BoltContext, logger: Logger):
         return
 
     # handle auth logic
-
     if is_authenticated(team_id=context.team_id, user_id=context.user_id, enterprise_id=context.enterprise_id):
         view = UserHomeView(event)
     else:
