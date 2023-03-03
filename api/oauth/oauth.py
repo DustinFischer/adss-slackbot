@@ -29,7 +29,10 @@ def slack_oauth_redirect():
 
 @oauth_api.route('/redirect/callback', methods=['GET'])
 def slack_oauth_redirect_callback():
-    # FIXME: is there a better way to do this than this? I'm sure there must be...
+    # FIXME: I'm sure there must be a much better way to do this...
+    #  This is a quick hack to get the flow working.
+    #    How do we reconcile the slack user before and after? Maybe a challenge state param with request to ext auth
+    #    that relates to the user (state->user uuid link?) that created it in the initial redirect after installation?
     INSTALL_META_COOKIE_NAME = 'slack-app-install-meta'
     install_meta = request.cookies.get(INSTALL_META_COOKIE_NAME, '')
     install_data = base64.b64decode(install_meta).decode('utf-8')
@@ -40,6 +43,7 @@ def slack_oauth_redirect_callback():
     is_enterprise_install = installation.is_enterprise_install
     team_id = installation.team_id
     enterprise_url = installation.enterprise_url
+    # FIXME end
 
     # Ripped from slack_bolt.oauth.internals.CallbackResponseBuilder
     if is_enterprise_install is True and enterprise_url is not None and app_id is not None:
