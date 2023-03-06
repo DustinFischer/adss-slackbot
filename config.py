@@ -33,6 +33,8 @@ class Config(object):
 
     # ADSS_OAUTH_URI
     ADSS_OAUTH_URI = env('ADSS_OAUTH_URI', '')
+    ADSS_API_BASE_URL = env('ADSS_API_BASE_URL', '')
+    ADSS_ACCESS_TOKEN = env('ADSS_API_TOKEN', '')
 
 
 settings = Config
