@@ -8,11 +8,11 @@ from requests.exceptions import JSONDecodeError
 
 from adss import auth
 from config import settings
-from models import ObjectPreview
+from adss.models import ObjectCategory
+from adss.models import ObjectPreview
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-from models import ObjectCategory
 
 
 class ADSSRequestError(RequestException):
@@ -65,7 +65,7 @@ class ADSSService(object):
 
     def _request(self, method, path, data=None, params=None) -> ADSSResponse:
         auth_header = dict(
-            access_token=auth.get_access_token(user='TEST')  # FIXME: this is very quick and blunt
+            access_token=auth.get_access_token(user='TEST')  # FIXME: this user thing is just representational
         )
 
         res = request(
@@ -91,8 +91,9 @@ class ADSSService(object):
     def patch(self, path, data=None):
         return self._request('patch', path, data=data)
 
-    def get_object_by_name_preview(self, modelled_system: str, object_name, category: ObjectCategory):
+    def get_object_by_name_preview(self, modelled_system: str, object_name, category: ObjectCategory) -> ObjectPreview:
         res = self.get(f'models/{modelled_system}/objects/{object_name}:{category.value}/preview')
+        # TODO: if nothing is returned but 200 received, we should raise as not found error
         res.raise_on_status()
         return ObjectPreview(**res.json)
 
@@ -100,4 +101,6 @@ class ADSSService(object):
 API = ADSSService()
 
 if __name__ == '__main__':
-    API.get_object_by_name_preview('Streaming Music', 'CDN', ObjectCategory.SERVICE)
+    res = API.get_object_by_name_preview('Streaming Music', 'CDN', ObjectCategory.SERVICE)
+
+    print(res.dict())

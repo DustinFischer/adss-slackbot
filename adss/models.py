@@ -7,15 +7,25 @@ from pydantic import BaseModel
 class ObjectCategory(Enum):
     SERVICE = 'Service'
     SYSTEM = 'System'
+    PEOPLE = 'People'
+    TAGS = 'Tags'
+    ORGANISATIONS = 'Organisations'
+    FUNCTIONAL_AREAS = 'Functional Areas'
+    LAYERS = 'Layers'
+    TECHNOLOGIES = 'Technologies'
 
 
 class ImageKey(Enum):
     KUBERNETES = 'Kubernetes'
     SYSTEMDB = 'SystemDB'
+    GITHUB = 'GitHub'
+    JIRA = 'Jira'
+
 
 
 class DataSourceType(Enum):
     PIPELINE = 'pipeline'
+    USER = 'user'
 
 
 class LayerName(Enum):
@@ -41,7 +51,7 @@ class ObjectRelationship(BaseModel):
 
 
 class DataSource(BaseModel):
-    imageKey: ImageKey
+    imageKey: Optional[ImageKey]
     name: str
     type: DataSourceType
     uiLink: Optional[str]

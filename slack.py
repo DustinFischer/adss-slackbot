@@ -1,7 +1,6 @@
 from slack_bolt import App
 from slack_bolt.adapter.flask import SlackRequestHandler
 
-import listeners
 from config import settings
 from oauth.oauth import get_oauth_flow
 
@@ -14,5 +13,3 @@ app = App(
 )
 
 handler = SlackRequestHandler(app)
-listeners.register_listeners(app)
-

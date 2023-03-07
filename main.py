@@ -18,8 +18,11 @@ def create_app():
 
     with app.app_context():
         # register api endpoints...
-        from api import slack_api
+        import listeners
+        from slack import app as slack_app
+        listeners.register_listeners(slack_app)
 
+        from api import slack_api
         app.register_blueprint(slack_api)
 
         @app.route(settings.SLACK_INSTALL_PATH, methods=['GET'])

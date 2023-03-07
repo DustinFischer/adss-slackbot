@@ -15,6 +15,7 @@ class Config(object):
     # app configs
     HTTP_PORT = int(env('HTTP_PORT', 5000))
     BASE_URL = env('BASE_URL', f'http://localhost:{HTTP_PORT}')
+    # SERVER_NAME = env('SERVER_NAME', f'localhost:{HTTP_PORT}')
 
     # slack configs
     # SLACK_BOT_TOKEN = env('SLACK_BOT_TOKEN', None)
