@@ -51,7 +51,7 @@ def adss_slash_command_handler(ack: Ack, context: BoltContext, command, payload,
                 ContextBlock(
                     block_id=block_id(),
                     elements=[
-                        ImageElement(image_url=static.url_for('icons/icon_people_person.png'), alt_text='icon_object'),
+                        ImageElement(image_url=static.url_for('icons/icon_people_person.png'), alt_text='icon_people_person'),
                         MarkdownTextObject(text='*Owner*\t'),
                         MarkdownTextObject(text=resp.owner)
                     ]
@@ -61,7 +61,7 @@ def adss_slash_command_handler(ack: Ack, context: BoltContext, command, payload,
                     block_id=block_id(),
                     elements=[
                         ImageElement(image_url=static.url_for('icons/icon_technologies_off.png'),
-                                     alt_text='icon_object'),
+                                     alt_text='icon_technologies_off'),
                         MarkdownTextObject(text='*Technologies*\t'),
                         *([ImageElement(image_url=tech.imageLink, alt_text=tech.name) for tech in
                            resp.technologies] or [MarkdownTextObject(text='_no data_')])
@@ -72,7 +72,7 @@ def adss_slash_command_handler(ack: Ack, context: BoltContext, command, payload,
                     block_id=block_id(),
                     elements=[
                         ImageElement(image_url=static.url_for('icons/icon_relationship_hover.png'),
-                                     alt_text='icon_object'),
+                                     alt_text='icon_relationship_hover'),
                         MarkdownTextObject(text='*Relationships*\t'),
                         MarkdownTextObject(
                             text=f'Calls:{resp.relationships.calls}\nCalled By:{resp.relationships.calledBy}'),
@@ -82,7 +82,7 @@ def adss_slash_command_handler(ack: Ack, context: BoltContext, command, payload,
                 ContextBlock(
                     block_id=block_id(),
                     elements=[
-                        ImageElement(image_url=static.url_for('icons/icon_data_source.png'), alt_text='icon_object'),
+                        ImageElement(image_url=static.url_for('icons/icon_data_source.png'), alt_text='icon_data_source'),
                         MarkdownTextObject(text='*Primary Data Sources*\t'),
                         *([MarkdownTextObject(text=(tech.imageKey.value) if tech.imageKey else tech.name) for tech in
                            resp.dataSources] or [MarkdownTextObject(text='_no data_')])
