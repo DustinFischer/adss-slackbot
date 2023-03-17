@@ -1,4 +1,4 @@
-from views import AbstractView
+from composition.views import AbstractView
 
 
 class BaseHomeView(AbstractView):

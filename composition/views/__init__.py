@@ -27,5 +27,3 @@ class AbstractView(ABC):
             type=self.type,
             blocks=self.blocks()
         )
-
-

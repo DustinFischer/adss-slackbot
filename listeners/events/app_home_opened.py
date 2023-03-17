@@ -4,7 +4,7 @@ from slack_bolt.context.context import BoltContext
 
 import slack
 # allowed args: https://slack.dev/bolt-python/api-docs/slack_bolt/kwargs_injection/args.html
-from views.home.home import HomeNoAuthView, UserHomeView
+from composition.views.home.home import HomeNoAuthView, UserHomeView
 
 
 def is_authenticated(**kwargs):
@@ -12,7 +12,7 @@ def is_authenticated(**kwargs):
     return slack.app.installation_store.find_installation(**kwargs)
 
 
-def app_home_opened(client, event, context: BoltContext, command, payload, message, logger: Logger):
+def app_home_opened(client, event, context: BoltContext, logger: Logger):
     # ignore the app_home_opened event for anything but the Home tab
     if event['tab'] != 'home':
         return
