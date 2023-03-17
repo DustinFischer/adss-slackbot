@@ -21,11 +21,10 @@ class ImageKey(Enum):
     GITHUB = 'GitHub'
     JIRA = 'Jira'
 
-
-
 class DataSourceType(Enum):
     PIPELINE = 'pipeline'
     USER = 'user'
+    LOADER = 'loader'
 
 
 class LayerName(Enum):

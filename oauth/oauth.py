@@ -62,7 +62,7 @@ def get_oauth_settings():
         install_path=settings.SLACK_INSTALL_PATH,
         # url will be used to generate an auth url that redirects to slack oauth
         redirect_uri=settings.SLACK_OAUTH_REDIRECT_URI,
-        redirect_uri_path=settings.SLACK_REDIRECT_API_PATH,  # callback path passed to slack oauth on success/failure (would ultimately be called )
+        redirect_uri_path=settings.SLACK_REDIRECT_PATH,  # callback path passed to slack oauth on success/failure (would ultimately be called )
         scopes=settings.SLACK_OAUTH_SCOPES,  # minimum required bot user scopes (oauth will request access with scopes)
         user_scopes=settings.SLACK_OAUTH_USER_SCOPES,  # minimum required user scopes (for org installs)
         installation_store=get_installation_store(),
