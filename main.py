@@ -1,8 +1,9 @@
-from flask import Flask, request, url_for
+from flask import Flask, request
 from flask.logging import default_handler
 
 import slack
 from utils.log import get_logger
+from config import settings
 
 
 def create_app():
