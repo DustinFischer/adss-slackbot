@@ -54,7 +54,7 @@ class OauthCallbackOptions(CallbackOptions):
         return BoltResponse(status=args.suggested_status_code, body=f"Installation failed! reason: {args.reason}")
 
 
-def get_oauth_settings():
+def get_oauth_settings(*, install_render=True):
     return OAuthSettings(
         client_id=settings.SLACK_CLIENT_ID,
         client_secret=settings.SLACK_CLIENT_SECRET,
@@ -69,13 +69,14 @@ def get_oauth_settings():
         state_validation_enabled=True,
         state_store=None,  # can customise this, default is to use FileOAuthStateStore
         state_cookie_name=settings.SLACK_OAUTH_STATE_COOKIE_NAME,
-        logger=log
+        logger=log,
+        install_page_rendering_enabled=install_render
     )
 
 
-def get_oauth_flow():
+def get_oauth_flow(oauth_settings: OAuthSettings = None):
     return OAuthFlow(
         client=None,  # instance of WebClient to use (one will be created by default)
-        settings=get_oauth_settings(),
+        settings=oauth_settings or get_oauth_settings(),
         logger=log
     )
