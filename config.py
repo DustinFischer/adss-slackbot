@@ -35,9 +35,10 @@ class Settings:
     SLACK_REDIRECT_CALLBACK_URI = env('SLACK_REDIRECT_CALLBACK_URI', f'{BASE_URL}{SLACK_REDIRECT_CALLBACK_PATH}')
 
     # ADSS Settings...
-    ADSS_OAUTH_URI = env('ADSS_OAUTH_URI', f'https://signin.adss-eng-develop.spandigital.net/login/spandigital?redir={base64.b64encode(SLACK_REDIRECT_CALLBACK_URI.encode()).decode()}')
+    ADSS_OAUTH_URL = env('ADSS_OAUTH_URI', f'https://signin.adss-eng-develop.spandigital.net/login/spandigital')
     ADSS_API_BASE_URL = env('ADSS_API_BASE_URL', 'https://spandigital.adss-eng-develop.spandigital.net/api/v2')
-    ADSS_API_TOKEN = env('ADSS_API_TOKEN', '')  # ADSS oauth_token jwt, get this from browser cookie (workaround)
+    ADSS_OAUTH_TOKEN = env('ADSS_API_TOKEN', '')  # ADSS oauth_token jwt, get this from browser cookie (workaround)
+    ADSS_OAUTH_TOKEN_NAME = env('ADSS_API_TOKEN', 'oauth2_token')
     ADSS_MODEL = env('ADSS_MODEL', 'Streaming Music')
 
 

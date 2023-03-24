@@ -38,7 +38,7 @@ class HomeNoAuthView(BaseHomeView):
                         text='Connect ADSS'
                     ),
                     style='primary',
-                    url=f'{settings.BASE_URL}/slack/login',
+                    url=f'{settings.BASE_URL}/slack/oauth',
                     action_id='connect_upstream_btn'
                 )
             ],

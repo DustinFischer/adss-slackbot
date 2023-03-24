@@ -1,6 +1,3 @@
-import base64
-import json
-from flask import current_app
 from slack_bolt.oauth import OAuthFlow
 from slack_bolt.oauth.callback_options import CallbackOptions, SuccessArgs, FailureArgs
 from slack_bolt.oauth.oauth_settings import OAuthSettings
@@ -21,28 +18,47 @@ class OauthCallbackOptions(CallbackOptions):
         """
         Define behaviour after slack oauth redirect callback has been successful
         """
+        installation = args.installation
+        app_id = installation.app_id
+        is_enterprise_install = installation.is_enterprise_install
+        team_id = installation.team_id
+        enterprise_url = installation.enterprise_url
 
-        # FIXME: I'm sure there must be a much better way to do this...
-        #       Problem here is that there is not currently info relating to the
-        #       This is a quick hack to get the flow working.
-        #       Could probably also set the user ID as a cookie and fetch from the installation store after we're directed back from ADSS login.
-        #       How do we reconcile the slack user before and after? Maybe a challenge state param with request to ext auth
-        #       that relates to the user (state -> user uuid link?) that created it in the initial redirect after installation?
-        install_meta = {
-            'enterprise_id': args.installation.enterprise_id,
-            'team_id': args.installation.team_id,
-            'user_id': args.installation.user_id,
-            'is_enterprise_install': args.installation.is_enterprise_install
-        }
-        install_cookie = base64.b64encode(json.dumps(install_meta).encode('utf-8'))
-        url = settings.ADSS_OAUTH_URI
+        # Ripped from slack_bolt.oauth.internals.CallbackResponseBuilder
+        if is_enterprise_install is True and enterprise_url is not None and app_id is not None:
+            url = f"{enterprise_url}manage/organization/apps/profile/{app_id}/workspaces/add"
+        elif team_id is None or app_id is None:
+            url = "slack://open"
+        else:
+            url = f"slack://app?team={team_id}&id={app_id}"
+        browser_url = f"https://app.slack.com/client/{team_id}"
+
+        html = f"""
+            <html>
+            <head>
+            <meta http-equiv="refresh" content="0; URL={url}">
+            <style>
+            body {{
+              padding: 10px 15px;
+              font-family: verdana;
+              text-align: center;
+            }}
+            </style>
+            </head>
+            <body>
+            <h2>Thank you!</h2>
+            <p>Redirecting to the Slack App... click <a href="{url}">here</a>. If you use the browser version of Slack, click <a href="{browser_url}" target="_blank">this link</a> instead.</p>
+            </body>
+            </html>
+            """  # noqa: E501
+
         return BoltResponse(
-            status=307,
-            body="",
+            status=200,
             headers={
-                "Content-Type": "text/html; charset=utf-8", "Location": url,
-                "Set-Cookie": f"slack-app-install-meta={install_cookie.decode('utf-8')}; " "Secure; " "HttpOnly; " "Path=/; " f"Max-Age={10 * 60 * 60}"
-            }
+                "Content-Type": "text/html; charset=utf-8",
+                "Set-Cookie": f"{settings.ADSS_OAUTH_TOKEN_NAME}=deleted; " "Secure; " "HttpOnly; " "Path=/; " "Expires=Thu, 01 Jan 1970 00:00:00 GMT",
+            },
+            body=html,
         )
 
     def _handle_failure(self, args: FailureArgs) -> BoltResponse:
@@ -54,7 +70,7 @@ class OauthCallbackOptions(CallbackOptions):
         return BoltResponse(status=args.suggested_status_code, body=f"Installation failed! reason: {args.reason}")
 
 
-def get_oauth_settings(*, install_render=True):
+def get_oauth_settings(*, install_render=False):
     return OAuthSettings(
         client_id=settings.SLACK_CLIENT_ID,
         client_secret=settings.SLACK_CLIENT_SECRET,
@@ -62,7 +78,8 @@ def get_oauth_settings(*, install_render=True):
         install_path=settings.SLACK_INSTALL_PATH,
         # url will be used to generate an auth url that redirects to slack oauth
         redirect_uri=settings.SLACK_OAUTH_REDIRECT_URI,
-        redirect_uri_path=settings.SLACK_REDIRECT_PATH,  # callback path passed to slack oauth on success/failure (would ultimately be called )
+        redirect_uri_path=settings.SLACK_REDIRECT_PATH,
+        # callback path passed to slack oauth on success/failure (would ultimately be called )
         scopes=settings.SLACK_OAUTH_SCOPES,  # minimum required bot user scopes (oauth will request access with scopes)
         user_scopes=settings.SLACK_OAUTH_USER_SCOPES,  # minimum required user scopes (for org installs)
         installation_store=get_installation_store(),

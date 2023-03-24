@@ -1,9 +1,7 @@
-from flask import Flask, request
+from flask import Flask
 from flask.logging import default_handler
 
-import slack
 from utils.log import get_logger
-from config import settings
 
 
 def create_app():
@@ -25,12 +23,6 @@ def create_app():
 
         from api import slack_api
         app.register_blueprint(slack_api)
-
-        @app.route(settings.SLACK_INSTALL_PATH, methods=['GET'])
-        def slack_install():
-            return slack.handler.handle(request)
-
-            # middlewares...
 
         # ...
         app.logger.debug("App Started with the following endpoints: \n{}".format(
